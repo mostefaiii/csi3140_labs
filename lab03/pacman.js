@@ -28,12 +28,11 @@ function randInt(max){
 function createGame(n){
     let board = new Array(n); 
 
-    const elems = ["C","@","^"]; 
-    
-    //let allplaced = false; //this is false as long as a game board does not include pac man, a fruit, and a ghost all at once
+    const elems = ["C","@","^"]; //elements to be added to board first
 
-    let whichelem = 0;
-    while (whichelem <= 2) { //this goes through elems array to know which element we're adding to the game 
+    let whichelem = 0; //to track which element we're on
+
+    while (whichelem <= 2) { //while not all elements have been added yet 
         let place = randInt(n); //generate a position for element 
         
         //TEST
@@ -46,12 +45,10 @@ function createGame(n){
             console.log("Free spot!")
 
             board[place] = elems[whichelem]; //add the element we're on to the board
-            whichelem++; //next element to add to array
-            
             //TEST
             console.log("Placed " + elems[whichelem] +  " in spot " + place); 
             console.log("Next elem!");
-            
+            whichelem++; //next element to add to array            
         }
     } //end while
     //now board has pac-man, ghost, and fruit in it
