@@ -20,23 +20,50 @@ as it would take prescendence.
 
 */
 
-function createGame(n){
-    const board = []; 
 
-    //an idea here, so that the loop knows to add these elements no matter what?
-    paccnt = 1;
-    ghostcnt = 1;
-    fruitcnt = 1;
-
-    //orrr i could do this another, less stupid way! 
-    //random placement of these 3 things
-    //before everything else
-    //for loop afterwards to do a check of what doesn't already have smth on it
-    //make a sense?
-    //ok
-
-
-    for (let i = 0; i < n; i++) { //add to board
-    
-    }
+function randInt(max){
+    return Math.floor(Math.random() * max);
 }
+
+function createGame(n){
+    let board = new Array(n); 
+
+    const elems = ["C","@","^"]; 
+    
+    //let allplaced = false; //this is false as long as a game board does not include pac man, a fruit, and a ghost all at once
+
+    let whichelem = 0;
+    while (whichelem <= 2) { //this goes through elems array to know which element we're adding to the game 
+        let place = randInt(n); //generate a position for element 
+        
+        //TEST
+        console.log("Putting " + elems[whichelem] + " in board");
+        console.log("at position " + place);
+        console.log("board currently at " + place + ": " + board[place]);
+
+        if (board[place] == null) { //if it's a free spot
+            //TEST
+            console.log("Free spot!")
+
+            board[place] = elems[whichelem]; //add the element we're on to the board
+            whichelem++; //next element to add to array
+            
+            //TEST
+            console.log("Placed " + elems[whichelem] +  " in spot " + place); 
+            console.log("Next elem!");
+            
+        }
+    } //end while
+    //now board has pac-man, ghost, and fruit in it
+
+    //loop to add pellets to remaining positions in board
+    for (let i = 0; i < n; i++) { //add to board
+        if (board[i]==null){
+            board[i] = "."; //add pellet
+        }
+    }//end for
+    //now the board should be full!
+    return board;
+}
+
+console.log(createGame(10));
