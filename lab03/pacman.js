@@ -27,6 +27,8 @@ isFruit = false; //check if pac-man is currently fruiting
 pacmanIndex = 0; //pac-man's current index
 boardSize = 0; //size of the game board
 board = []; //board itself
+score = 0;
+maxScore = 0; //based on da number of pellets
 
 function randInt(max){
     return Math.floor(Math.random() * max);
@@ -70,6 +72,7 @@ function createGame(n){
     for (let i = 0; i < n; i++) { //add to board
         if (board[i]==null){
             board[i] = "."; //add pellet
+            maxScore++;
         }
     }//end for
     //now the board should be full!
@@ -100,7 +103,7 @@ function moveLeft(game){
             board[pacmanIndex] = " ";
             pacmanIndex = boardSize - 1;
         }else{
-            left = "C";
+            board[boardSize - 1 ] = "C";
             board[pacmanIndex] = " ";
             pacmanIndex = boardSize - 1;
         }
@@ -110,11 +113,52 @@ function moveLeft(game){
 }
 
 function moveRight(game){
+    //cases:
+    //middle
+    if (pacmanIndex>=0 && pacmanIndex!=(boardSize-1)){
+        right = board[pacmanIndex + 1];
 
+        if (right!=" ") {
+            board[pacmanIndex + 1] = right.concat("C");
+            board[pacmanIndex] = " ";
+            pacmanIndex++;
+        } else { //empty tile
+            board[pacmanIndex + 1] = "C";
+            board[pacmanIndex] = " ";
+            pacmanIndex++;
+        }
+    }else{
+        right = board[0];
+        if (right!=" ") {
+            board[0] = right.concat("C");
+            board[pacmanIndex] = " ";
+            pacmanIndex = 0;
+        }else {
+            board[0] = "C";
+            board[pacmanIndex] = " ";
+            pacmanIndex = 0;
+        }
+    }
 }
 
 //exists to figure out the points system
 function processMove(game){
+    switch (board[pacmanIndex]){
+        case ".C":
+            score++;
+            break;
+        case "@C":
+            isFruit = true;
+        case "^C":
+            if(!isFruit){
+                loseGame();
+            }else{
+                isFruit = false;
+            }
+    }
+}
+
+function loseGame(){
 
 }
 
