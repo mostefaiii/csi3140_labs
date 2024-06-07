@@ -20,13 +20,21 @@ as it would take prescendence.
 
 */
 
+//global vars:
+
+//following vars are for processmove logic
+isFruit = false; //check if pac-man is currently fruiting
+pacmanIndex = 0; //pac-man's current index
+boardSize = 0; //size of the game board
+board = []; //board itself
 
 function randInt(max){
     return Math.floor(Math.random() * max);
 }
 
 function createGame(n){
-    let board = new Array(n); 
+    board = new Array(n); 
+    boardSize = n;
 
     const elems = ["C","@","^"]; //elements to be added to board first
 
@@ -45,6 +53,11 @@ function createGame(n){
             console.log("Free spot!")
 
             board[place] = elems[whichelem]; //add the element we're on to the board
+            
+            if (whichelem==0){ //if we're placing pac-man
+                pacmanIndex = place; //update pac-man's index
+            }
+
             //TEST
             console.log("Placed " + elems[whichelem] +  " in spot " + place); 
             console.log("Next elem!");
@@ -63,4 +76,51 @@ function createGame(n){
     return board;
 }
 
-console.log(createGame(10));
+//purely moves pac-man onto the tile to its left, becoming roommates with its inhabitor
+function moveLeft(game){ 
+    //cases: 
+    //pac-man is in da middle/end
+    //just move him
+    if (pacmanIndex<(boardSize) && pacmanIndex!=0) { 
+        left = board[pacmanIndex - 1];
+
+        if (left!=" ") { //this is because i'm using concat--if pac-man is on a tile by himself i want it to show "C" and not " C"
+            board[pacmanIndex - 1] = left.concat("C"); //fuse em!
+            board[pacmanIndex] = " "; //empty pacman's spot
+            pacmanIndex--; //update his index
+        }else { //empty tile
+            board[pacmanIndex - 1] = "C";
+            board[pacmanIndex] = " ";
+            pacmanIndex--;
+        }
+    }else{
+        left = board[boardSize-1]; //furthest right element
+        if (left!=" ") {
+            board[boardSize - 1 ] = left.concat("C");
+            board[pacmanIndex] = " ";
+            pacmanIndex = boardSize - 1;
+        }else{
+            left = "C";
+            board[pacmanIndex] = " ";
+            pacmanIndex = boardSize - 1;
+        }
+    }
+    //else: pac-man is at da start
+    //move him to da end
+}
+
+function moveRight(game){
+
+}
+
+//exists to figure out the points system
+function processMove(game){
+
+}
+
+createGame(10);
+console.log("the board:" + board);
+moveRight(board);
+console.log(board);
+moveRight(board);
+console.log(board);
